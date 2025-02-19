@@ -169,10 +169,12 @@ body {
         <a href="#">Манга</a>
     </div>
     <button class="category-button" onclick="toggleInfoMenu()">Інформація</button>
-    <div class="category-dropdown" id="infoDropdown">
-        <a href="#">Про Нас</a>
-        <a href="#">Контактні Дані</a>
+    <div class="category-dropdown" id="infoDropdown" style="display: none;">
+        <a href="#" id="aboutUs">Про Нас</a>
+        <a href="#" id="contactInfo">Контактні Дані</a>
     </div>
+
+
     </div>
     <script>
         function toggleInfoMenu() {
@@ -189,47 +191,61 @@ body {
             }
         };
 
-         /* Про нас яку*/
-         document.querySelectorAll('#infoDropdown a').forEach(link => {
-                    link.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        const infoTitle = this.textContent;
-                        document.querySelector('header h1').textContent = infoTitle;
-                        let content = '';
-            
-                        if (infoTitle === 'Про Нас') {
-                            content = `
-                                <p>Ласкаво просимо до "Книгоман" – місця, де книги оживають! Ми створили цей магазин для справжніх поціновувачів літератури, які шукають захопливі історії, нові знання та незабутні емоції.</p>
-                                <p>У нашому асортименті ви знайдете книги на будь-який смак:</p>
-                                <p>✨ Фантастика – пориньте у світи майбутнього, магії та незвіданих галактик. Епічні битви, неймовірні пригоди та альтернативні реальності чекають на вас!</p>
-                                <p>❤️ Романтика – історії, що зачіпають серце. Пристрасні кохання, ніжні почуття та випробування, які роблять любов ще сильнішою.</p>
-                                <p>🔍 Детективи – розгадуйте таємниці разом із геніальними слідчими. Заплутані справи, несподівані повороти та напружений сюжет – усе, що потрібно для справжнього інтелектуального задоволення.</p>
-                                <p>🔬 Наукова література – розширюйте свої горизонти та дізнавайтеся більше про світ. Від фізики до психології – ми зібрали найкращі книги для допитливих умів.</p>
-                                <p>🎌 Манга – японські комікси для будь-якого настрою. Від епічних бойовиків до ніжних романтичних історій – у нас є те, що вам сподобається!</p>
-                                <p>Ми обираємо тільки найкращі видання, щоб кожна книга приносила вам справжнє задоволення. Приєднуйтесь до читацької спільноти "Книгоман" та відкривайте нові історії разом із нами!</p>
-                                <p>📚 З любов’ю до книг, ваша команда "Книгоман"</p>
-                            `;
-                            /*Контактні дані*/
-                        } else if (infoTitle === 'Контактні Дані') {
-                            content = `
-                                <p>Маєте питання або шукаєте ідеальну книгу? Ми завжди на зв’язку!</p>
-                                <p>📍 Адреса: м. Коломия, вул. Січових стрільців</p>
-                                <p>📧 Email: knihoman.shop@gmail.com</p>
-                                <p>📞 Телефон: +38 (097) 123-45-67</p>
-                                <p>💬 Месенджери:</p>
-                                <p>🔹 Telegram: <a href="https://t.me/+IvU6FHkU2Z5kZmRi" target="_blank">Посилання</a></p>
-                                <p>🔹 Instagram: <a href="https://www.instagram.com/knigomania.com.ua?utm_source=ig_web_button_share_sheet&igshid=ZDNlZDc0MzIxNw==" target="_blank">Посилання</a></p>
-                                <p>🕒 Графік роботи:</p>
-                                <p>📅 Пн-Сб: 08:00 – 24:00</p>
-                                <p>🌟 Неділя – вихідний</p>
-                                <p>Будемо раді допомогти вам знайти ідеальну книгу! 📚✨</p>
-                            `;
-                        }
-            
-                        document.querySelector('.container').innerHTML = content;
-                        document.getElementById('infoDropdown').style.display = 'none';
-                    });
-                });
+       // Функція для відкриття/закриття меню
+function toggleInfoMenu() {
+    const dropdown = document.getElementById('infoDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+// Обробка натискання на "Про Нас" та "Контактні Дані"
+document.querySelectorAll('#infoDropdown a').forEach(link => {
+    link.addEventListener('click', function(event) {
+        event.preventDefault(); // Запобігає переходу за посиланням
+        
+        // Отримуємо текст пункту меню
+        const infoTitle = this.textContent; 
+        document.querySelector('header h1').textContent = infoTitle; // Оновлюємо заголовок
+
+        let content = '';
+
+        // Вміст для розділу "Про Нас"
+        if (infoTitle === 'Про Нас') {
+            content = `
+                <p>Ласкаво просимо до "Книгоман" – місця, де книги оживають! Ми створили цей магазин для справжніх поціновувачів літератури, які шукають захопливі історії, нові знання та незабутні емоції.</p>
+                <p>У нашому асортименті ви знайдете книги на будь-який смак:</p>
+                <p>✨ Фантастика – пориньте у світи майбутнього, магії та незвіданих галактик.</p>
+                <p>❤️ Романтика – історії, що зачіпають серце.</p>
+                <p>🔍 Детективи – розгадуйте таємниці разом із геніальними слідчими.</p>
+                <p>🔬 Наукова література – розширюйте свої горизонти та дізнавайтеся більше про світ.</p>
+                <p>🎌 Манга – японські комікси для будь-якого настрою.</p>
+                <p>📚 З любов’ю до книг, ваша команда "Книгоман"</p>
+            `;
+        // Вміст для розділу "Контактні Дані"
+        } else if (infoTitle === 'Контактні Дані') {
+            content = `
+                <p>Маєте питання або шукаєте ідеальну книгу? Ми завжди на зв’язку!</p>
+                <p>📍 Адреса: м. Коломия, вул. Січових стрільців</p>
+                <p>📧 Email: knihoman.shop@gmail.com</p>
+                <p>📞 Телефон: +38 (097) 123-45-67</p>
+                <p>💬 Месенджери:</p>
+                <p>🔹 Telegram: <a href="https://t.me/+IvU6FHkU2Z5kZmRi" target="_blank">Посилання</a></p>
+                <p>🔹 Instagram: <a href="https://www.instagram.com/knigomania.com.ua?utm_source=ig_web_button_share_sheet&igshid=ZDNlZDc0MzIxNw==" target="_blank">Посилання</a></p>
+                <p>🕒 Графік роботи:</p>
+                <p>📅 Пн-Сб: 08:00 – 24:00</p>
+                <p>🌟 Неділя – вихідний</p>
+                <p>Будемо раді допомогти вам знайти ідеальну книгу! 📚✨</p>
+            `;
+        }
+
+        // Вставка контенту у блок container
+        document.querySelector('.container').innerHTML = content;
+
+        // Закриваємо меню після натискання
+        document.getElementById('infoDropdown').style.display = 'none';
+    });
+});
+
+
 
             </script>
     <!-- Пошук книг -->
@@ -992,10 +1008,6 @@ body {
                 }
             });
     
-            // Якщо нічого не знайдено - повідомлення
-            if (!found) {
-                alert('Книгу не знайдено');
-            }
         }
     
         // Додаємо обробник подій для випадаючого списку категорій
@@ -1145,26 +1157,16 @@ body {
     <button class="category-button account-button" onclick="openAccountModal()">Мій аккаунт</button>
     <div class="category-dropdown" id="profileDropdown">
         <a href="#" onclick="openSettings()">Налаштування</a>
-        <a href="#" onclick="openPurchaseHistory()">Історія покупок</a>
+
         <a href="#" onclick="openPromoCode()">Промокод</a>
     </div>
 </div>
 
 
-<!-- Модальне вікно для історії покупок -->
-<div id="purchaseHistoryModal" class="modal">
-    <div class="submenu-button">
-        <span class="close-btn" onclick="closeModal('purchaseHistoryModal')">&times;</span>
-        <h2>Історія покупок</h2>
-        <div id="purchaseHistoryList">
-            <!-- Історія покупок буде додаватися тут -->
-        </div>
-    </div>
-</div>
 
 <!-- Модальне вікно для промокоду -->
 <div id="promoCodeModal" class="modal">
-    <div class="submenu-button">
+    <div class="modal-content">
         <span class="close-btn" onclick="closeModal('promoCodeModal')">&times;</span>
         <h2>Введіть промокод</h2>
         <input type="text" id="promoCodeInput" placeholder="Введіть промокод">
@@ -1174,17 +1176,6 @@ body {
 </div>
 
 <script>
-    function openPurchaseHistory() {
-        const purchaseHistory = [
-            'Книга 1: Найбагатший чоловік у Вавилоні - 900 грн',
-            'Книга 2: Макова війна - 650 грн',
-            'Книга 3: Розсікаючи хвилі - 710 грн'
-        ];
-        const purchaseHistoryList = document.getElementById('purchaseHistoryList');
-        purchaseHistoryList.innerHTML = purchaseHistory.map(item => `<p>${item}</p>`).join('');
-        openModal('purchaseHistoryModal');
-    }
-
     function openPromoCode() {
         openModal('promoCodeModal');
     }
@@ -1193,33 +1184,290 @@ body {
         const promoCode = document.getElementById('promoCodeInput').value.trim();
         const promoCodeMessage = document.getElementById('promoCodeMessage');
 
-        if (promoCode === 'DISCOUNT10') {
-            promoCodeMessage.textContent = 'Промокод застосовано! Ви отримали знижку 10%';
+        if (promoCode === 'DISCOUNT50') {
+            promoCodeMessage.textContent = 'Промокод застосовано! Ви отримали знижку 50%';
             promoCodeMessage.style.color = 'green';
+
+            // Додаємо етикетку зі знижкою до кожної книги
+            const books = document.querySelectorAll('.book-card');
+            books.forEach(book => {
+                if (!book.querySelector('.discount-label')) {
+                    const discountLabel = document.createElement('img');
+                    discountLabel.src = 'C:/JS/images/skudka.png';
+                    discountLabel.alt = 'Знижка 50%';
+                    discountLabel.classList.add('discount-label');
+                    book.appendChild(discountLabel);
+                }
+            });
         } else {
             promoCodeMessage.textContent = 'Невірний промокод. Спробуйте ще раз.';
             promoCodeMessage.style.color = 'red';
         }
     }
 </script>
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
+    }
 
+    .modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .discount-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .book-card {
+        position: relative; /* Додаємо відносне позиціонування для батьківського елемента */
+        background: linear-gradient(to right, #5900ff, #000000);
+        border: 1px solid #000000;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin: 5px;
+        padding: 5px;
+        width: calc(33.333% - 20px);
+        box-sizing: border-box;
+    }
+
+    .book-card img {
+        max-width: 100%;
+        border-radius: 10px;
+    }
+
+    .book-card h3 {
+        margin: 10px 0;
+    }
+
+    .book-card p {
+        margin: 5px 0;
+    }
+
+    .book-card .price {
+        font-weight: bold;
+        color: #ffffff;
+    }
+
+    .book-card .btn {
+        display: inline-block;
+        margin: 5px 0;
+        padding: 10px 15px;
+        background: linear-gradient(to right, #000000, #5900ff);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        text-align: center;
+        margin-left: -15px;
+    }
+</style>
+
+
+<!-- Модальне вікно для Налаштувань -->
 <!-- Модальне вікно для Налаштувань -->
 <div id="settingsModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal('settingsModal')">&times;</span>
         <h2>Налаштування профілю</h2>
-        <label for="settingsName">Нове ім'я:</label>
-        <input type="text" id="settingsName" name="settingsName" required>
-        <label for="settingsEmail">Нова електронна пошта:</label>
-        <input type="email" id="settingsEmail" name="settingsEmail" required>
-        <label for="settingsPhone">Новий номер телефону:</label>
-        <input type="tel" id="settingsPhone" name="settingsPhone" required>
-        <label for="currentPassword">Поточний пароль:</label>
-        <input type="password" id="currentPassword" name="currentPassword" required>
-        <label for="newPassword">Новий пароль:</label>
-        <input type="password" id="newPassword" name="newPassword">
-        <button type="button" onclick="updateProfile()">Зберегти</button>
+        <form>
+            <div class="form-group">
+                <label for="settingsName">Нове ім'я:</label>
+                <input type="text" id="settingsName" name="settingsName" required>
+            </div>
 
+            <div class="form-group">
+                <label for="settingsEmail">Нова електронна пошта:</label>
+                <input type="email" id="settingsEmail" name="settingsEmail" required>
+            </div>
+
+            <div class="form-group">
+                <label for="settingsPhone">Новий номер телефону:</label>
+                <input type="tel" id="settingsPhone" name="settingsPhone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="currentPassword">Поточний пароль:</label>
+                <input type="password" id="currentPassword" name="currentPassword" required>
+            </div>
+
+            <div class="form-group">
+                <label for="newPassword">Новий пароль:</label>
+                <input type="password" id="newPassword" name="newPassword">
+            </div>
+
+            <button type="button" class="account-button" onclick="updateProfile()">Зберегти</button>
+        </form>
+    </div>
+</div>
+<style>
+/* Стиль для модального вікна */
+
+
+
+/* Стиль для форми */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+
+
+}
+#settingsModal .modal-content {
+    background: url("https://i.7fon.org/1000/w685897434.jpg")no-repeat;
+    padding: 20px;
+    border-radius: 10px;
+    color: white; /* Зробити текст білим для контрасту */
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+}
+#settingsModal .account-button {
+    position: relative;  /* Якщо потрібно, можна змінити на absolute */
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%; /* Або підлаштуй під потрібний розмір */
+    margin-top: 15px; /* Щоб відокремити від полів */
+    transition: transform 0.2s ease-in-out, width 0.2s ease-in-out;
+}
+#settingsModal form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+#settingsModal .account-button:hover {
+    transform: translateX(-50%) scale(0.9); /* Зменшує кнопку при наведенні */
+    width: 70%;
+}
+/* Стиль для модального вікна промокоду */
+/* Стиль для модального вікна промокоду */
+/* Стиль для модального вікна промокоду */
+#promoCodeModal {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#promoCodeModal.active {
+    display: flex;
+}
+
+#promoCodeModal .modal-content {
+    background: url("https://i.7fon.org/1000/w685897434.jpg") no-repeat center;
+    background-size: cover;
+    padding: 20px;
+    border-radius: 10px;
+    color: white; /* Зробити текст білим для контрасту */
+    text-align: center;
+    width: 300px;
+    position: relative;
+}
+
+#promoCodeModal h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#promoCodeModal input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color:  linear-gradient(to right, #5900ff, #000000);
+    
+}
+
+#promoCodeModal button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background: linear-gradient(to right, #5900ff, #000000);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+#promoCodeModal button:hover {
+    transform: scale(0.95);
+} 
+
+#promoCodeModal .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+#promoCodeMessage {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+
+
+
+
+
+</style>
         <script>
             function updateProfile() {
                 const newName = document.getElementById('settingsName').value.trim();
@@ -1247,41 +1495,6 @@ body {
     </div>
 </div>
 
-<script>
-function openPurchaseHistory() {
-    const purchaseHistory = [
-        { title: 'Книга 1: Найбагатший чоловік у Вавилоні', price: '900 грн', status: 'Успішно куплена' },
-        { title: 'Книга 2: Макова війна', price: '650 грн', status: 'Замовлена' },
-        { title: 'Книга 3: Розсікаючи хвилі', price: '710 грн', status: 'Скасовано' }
-    ];
-    
-    const purchaseHistoryList = document.getElementById('purchaseHistoryList');
-    const filterStatus = document.getElementById('filterStatus').value;
-    
-    const filteredHistory = filterStatus === 'all' 
-        ? purchaseHistory 
-        : purchaseHistory.filter(item => item.status === filterStatus);
-    
-    purchaseHistoryList.innerHTML = filteredHistory.map(item => `<p>${item.title} - ${item.price} (${item.status})</p>`).join('');
-    openModal('purchaseHistoryModal');
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    const filterSelect = document.createElement("select");
-    filterSelect.id = "filterStatus";
-    filterSelect.innerHTML = `
-        <option value="all">Всі</option>
-        <option value="Успішно куплена">Успішно куплена</option>
-        <option value="Замовлена">Замовлена</option>
-        <option value="Скасовано">Скасовано</option>
-    `;
-    filterSelect.addEventListener("change", openPurchaseHistory);
-    
-    const purchaseHistoryModal = document.getElementById("purchaseHistoryModal").querySelector(".modal-content");
-    purchaseHistoryModal.insertBefore(filterSelect, document.getElementById("purchaseHistoryList"));
-});
-
-</script>
 
 
 
@@ -1591,4 +1804,5 @@ body {
     padding: 0;
     background: linear-gradient(to right, #000000, #5900ff);
     color: white;
+    
 }
