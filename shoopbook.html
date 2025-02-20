@@ -1201,12 +1201,49 @@ body {
                     discountLabel.classList.add('discount-label');
                     book.appendChild(discountLabel);
                 }
+
+                // Додаємо знижку до ціни
+                const priceElement = book.querySelector('.price');
+                if (priceElement && !priceElement.querySelector('.discounted-price')) {
+                    const originalPrice = parseFloat(priceElement.textContent.replace('Ціна: ', '').replace(' грн', ''));
+                    const discountedPrice = originalPrice * 0.5;
+                    const discountedPriceElement = document.createElement('span');
+                    discountedPriceElement.classList.add('discounted-price');
+                    discountedPriceElement.style.color = 'red';
+                    discountedPriceElement.style.textDecoration = 'line-through';
+                    discountedPriceElement.style.marginLeft = '10px';
+                    discountedPriceElement.textContent = `${originalPrice} грн`;
+                    priceElement.textContent = `Ціна: ${discountedPrice} грн`;
+                    priceElement.appendChild(discountedPriceElement);
+                }
             });
         } else {
             promoCodeMessage.textContent = 'Невірний промокод. Спробуйте ще раз.';
             promoCodeMessage.style.color = 'red';
         }
     }
+
+    document.getElementById("buyForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        document.getElementById("successMessage").style.display = "block";
+
+        // Видаляємо знижку після оформлення замовлення
+        const books = document.querySelectorAll('.book-card');
+        books.forEach(book => {
+            const discountLabel = book.querySelector('.discount-label');
+            if (discountLabel) {
+                discountLabel.remove();
+            }
+
+            const priceElement = book.querySelector('.price');
+            const discountedPriceElement = priceElement.querySelector('.discounted-price');
+            if (discountedPriceElement) {
+                const originalPrice = discountedPriceElement.textContent.replace(' грн', '');
+                priceElement.textContent = `Ціна: ${originalPrice} грн`;
+            }
+        });
+    });
+</script>
 </script>
 <style>
     .modal {
