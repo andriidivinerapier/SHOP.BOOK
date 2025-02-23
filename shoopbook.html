@@ -31,7 +31,7 @@ body {
     font-size: 16px;
     color: white;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 5px rgb(85, 0, 255);
+    box-shadow: 0 0px 5px rgb(85, 0, 255);
     
 }
 
@@ -51,7 +51,7 @@ body {
             border-radius: 25px;
             overflow: hidden;
             background: rgb(0, 0, 0);
-            margin-left:325px;
+            margin-left:450px;
             margin-top: -49px;
             flex: 1;
             max-width: 500px;
@@ -154,11 +154,13 @@ body {
 }
 
 
+    /*Головна*/
     </style>
 </head>
 <body>
 
-<div class="header">
+<button class="category-button" onclick="location.reload()">Головна</button>
+    <div class="header">
     <!-- Кнопка категорій товару -->
     <button class="category-button" onclick="toggleCategoryMenu()">Категорії книг</button>
     <div class="category-dropdown" id="categoryDropdown">
@@ -168,7 +170,256 @@ body {
         <a href="#">Наукова література</a>
         <a href="#">Манга</a>
     </div>
-    <!-- Кнопка інформації -->
+<style>
+    .category-button {
+        background: linear-gradient(to right, #5900ff, #000000);
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        color: white;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 0px 5px rgb(85, 0, 255);
+    }
+
+    .category-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0px 10px rgb(85, 0, 255);
+    }
+
+    .category-dropdown {
+        display: none;
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 250px;
+        background: linear-gradient(to right, #5900ff, #000000);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .category-dropdown h3 {
+        margin: 0 0 10px;
+        color: white;
+    }
+
+    .cart-item {
+        background: white;
+        color: black;
+        padding: 5px;
+        margin: 5px 0;
+        border-radius: 5px;
+    }
+
+    .cart-item input {
+        width: 50px;
+        margin-left: 10px;
+        
+
+    }
+   /* Тло затемнення */
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Напівпрозорий фон */
+    display: none; /* Приховано за замовчуванням */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Вікно кошика */
+.cart-box {
+    background: linear-gradient(to right, #5900ff, #000000); /* Синій градієнт */
+    border-radius: 15px;
+    padding: 20px;
+    width: 350px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Коли вікно відкрите */
+.cart-overlay.active {
+    display: flex;
+}
+
+.cart-box.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Кнопка закриття */
+.close-cart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+.cart-box input {
+    border-radius: 10px; /* Закруглення кутів */
+    border: none; /* Прибрати рамку */
+    padding: 5px 10px; /* Внутрішні відступи */
+
+}
+.cart-box-item img {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<button class="category-button" onclick="toggleCartMenu()">Кошик</button>
+<!-- Затемнене тло -->
+<div class="cart-overlay" id="cartOverlay">
+    <div class="cart-box" id="cartBox">
+        <button class="close-cart" onclick="closeCart()">✖</button>
+        <h3>Ваш кошик</h3>
+        <div id="cartItems"></div>
+        <button class="category-button" onclick="checkout()">Оформити замовлення</button>
+    </div>
+</div>
+
+
+
+<script>
+    let cart = [];
+
+   
+
+    function addToCart(bookTitle, bookPrice, bookImage) {
+    const existingItem = cart.find(item => item.title === bookTitle);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ title: bookTitle, price: bookPrice, image: bookImage, quantity: 1 });
+    }
+    alert('Книга додана до кошика');
+    updateCart();
+}
+function toggleCartMenu() {
+    const overlay = document.getElementById('cartOverlay');
+    const cartBox = document.getElementById('cartBox');
+
+    if (overlay.style.display === 'flex') {
+        closeCart();
+    } else {
+        overlay.style.display = 'flex';
+        setTimeout(() => {
+            overlay.classList.add('active');
+            cartBox.classList.add('active');
+        }, 10);
+        updateCart();
+    }
+}
+
+function closeCart() {
+    const overlay = document.getElementById('cartOverlay');
+    const cartBox = document.getElementById('cartBox');
+
+    overlay.classList.remove('active');
+    cartBox.classList.remove('active');
+
+    setTimeout(() => {
+        overlay.style.display = 'none';
+    }, 300);
+}
+
+/* Додаємо можливість закрити кошик кліком по затемненому фону */
+document.getElementById('cartOverlay').addEventListener('click', function (event) {
+    if (event.target === this) {
+        closeCart();
+    }
+});
+
+
+
+
+function updateCart() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+
+    let totalPrice = 0;
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p>Ваш кошик порожній</p>';
+    } else {
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            totalPrice += itemTotal;
+
+            const cartItem = document.createElement('div');
+            cartItem.className = "cart-box-item";
+
+            cartItem.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" width="50">
+                <div>
+                    <p>${item.title} - ${item.price} грн</p>
+                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.title}', this.value)">
+                </div>
+            `;
+
+            cartItems.appendChild(cartItem);
+        });
+
+        // Додаємо загальну вартість
+        const totalElement = document.createElement('p');
+        totalElement.innerHTML = `<strong>Загальна вартість: ${totalPrice} грн</strong>`;
+        cartItems.appendChild(totalElement);
+    }
+}
+
+
+
+
+    function updateQuantity(bookTitle, quantity) {
+        const item = cart.find(item => item.title === bookTitle);
+        if (item) {
+            item.quantity = parseInt(quantity);
+            updateCart();
+        }
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert('Ваш кошик порожній');
+        } else {
+            alert('Оформлення замовлення...');
+        }
+    }
+</script>
+
+</body>
+</html>
+    </script>
+
+    <!-- Кнопка інформації --> 
     <button class="category-button" onclick="toggleInfoMenu()">Інформація</button>
     <div class="category-dropdown" id="infoDropdown" style="display: none;">
         <a href="#" id="aboutUs">Про Нас</a>
@@ -251,6 +502,7 @@ body {
         });
 </script>
     <!-- Пошук книг -->
+     
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Знайти книгу...">
         <button onclick="searchBook()">Пошук</button>
@@ -300,7 +552,7 @@ body {
 <div class="container">
     <!-- Книга 1 -->
     <div class="book-card">
-        <img src="C:/JS/images/book.png" alt="Book 1">
+        <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book.png?raw=true" alt="Book 1">
         <h3>Найбагатший чоловік у Вавилоні</h3>
         <p>Автор:  Джордж Клейсон</p>
         <p class="short-description"></p>
@@ -351,7 +603,7 @@ body {
         </style>
         
         <div class="book-card">
-            <img src="C:/JS/images/book1.png" alt="Book 2">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book1.png?raw=true" alt="Book 2">
             <h3>Макова війна</h3>
             <p>Автор:  Ребекка Кван</p>
             <p class="short-description">Про Книгу: Сирота війни з глухої провінції зробила неможливе — на відмінно склала загальноімперський іспит Кедзю для вступу в військову академію....
@@ -363,10 +615,25 @@ body {
             <a href="#" class="btn">Купити</a>
             <a href="#" class="btn">Читати онлайн</a>
             <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
+            <button class="btn" onclick="addToCart('Макова війна', 650, 'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/f/i/file_1498_83.jpg')"> Додати до кошика </button>
+            
+
+
+           <script> function addToCart(bookTitle, bookPrice) {
+                const existingItem = cart.find(item => item.title === bookTitle);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ title: bookTitle, price: bookPrice, quantity: 1 });
+                }
+                alert('Книга додана до кошика');
+                updateCart();
+            }
+        </script>
            
         </div>
         <div class="book-card">
-            <img src="C:/JS/images/book3.png" alt="Book 3">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book3.png?raw=true" alt="Book 3">
             <h3>Розсікаючи хвилі</h3>
             <p>Автор: Крістіна Монінгер</p>
             <p class="short-description">Про Книгу:  Молоді, дикі, відчайдушні Ейвері, Ізабелла, Одіна, Лі та Джозі — найкращі подруги відтоді, як познайомилися в серфінг-таборі. Їхнє безтурботне літо триває доти....</p>
@@ -378,7 +645,7 @@ body {
             <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
         </div>
         <div class="book-card">
-            <img src="C:/JS/images/book4.png" alt="Book 4">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book4.png?raw=true" alt="Book 4">
             <h3>Це те, що вас зцілить, коли будете готові</h3>
             <p>Автор: Бріанна Вест</p>
             <p class="short-description">Про Книгу:Зцілення — це не одноразова подія. Воно може розпочатися з одноразової події — зазвичай із якоїсь раптової втрати, що руйнує наше уявлення про майбутнє. Однак справжнє зцілення дає нам змогу</p>
@@ -390,7 +657,7 @@ body {
             <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
         </div>
         <div class="book-card">
-            <img src=C:/JS/images/book5.png alt="Book 5">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book5.png?raw=true" alt="Book 5">
             <h3>Залізний генерал. Уроки людяності</h3>
             <p>Автор:Людмила Долгоновська</p>
             <p class="short-description">Про Книгу: Книга Людмили Долгоновської «Залізний генерал. Уроки людяності» є надзвичайно важливим та вражаючим літературним проектом, який проливає світло на одну з найбільш знакових постатей сучасної української історії.
@@ -403,7 +670,7 @@ body {
             <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
         </div>
         <div class="book-card">
-            <img src="C:/JS/images/book6.png" alt="Book 6">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book6.png?raw=true" alt="Book 6">
             <h3>Пригоди української літератури</h3>
             <p>Автор:Ростислав Семків</p>
             <p>Автор:Ольга Глумчер</p>
@@ -417,7 +684,7 @@ body {
             <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
         </div>
         <div class="book-card">
-            <img src="C:/JS/images/book7.jpg" alt="Book 7">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book7.jpg?raw=true" alt="Book 7">
             <h3>По той бік чарівної палички. Магія і хаос мого дорослішання</h3>
             <p>Автор: Том Фелтон</p>
             <p class="short-description">Про Книгу: По той бік чарівної палички. Магія і хаос мого дорослішання» – це мемуари актора Тома Фелтона, добре відомого усім читачам за роллю Драко Мелфоя у фільмах Поттеріани. Дитинство акторів головних героїв
@@ -429,7 +696,7 @@ body {
             <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
         </div>
         <div class="book-card">
-            <img src="C:/JS/images/book8.png" alt="Book 8">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book8.png?raw=true" alt="Book 8">
             <h3>Мистецтво й створення серіалу Аркейн</h3>
             <p>Автор:Елізабет Вінчентеллі</p>
             <p class="short-description">Про Книгу: Мистецтво й створення серіалу Аркейн» — це захоплива подорож залаштунками анімаційного серіалу від Netflix, відзначеного нагородою «Еммі», сповнена приголомшливих ілюстрацій та концепт-артів!
@@ -443,7 +710,7 @@ body {
        
 
         <div class="book-card">
-            <img src="C:/JS/images/book9.png" alt="Book 10">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book9.png?raw=true" alt="Book 10">
             <h3>Evangelion</h3>
             <p>Автор:Hideaki Anno</p>
             <p class="short-description">Про Книгу:Дія відбувається в 2015 році, через чотирнадцять років після катастрофічного Другого удару, причиною якого, за офіційною версією, стало падіння метеорита, що знищив дві третини населення Земліі 
@@ -455,7 +722,7 @@ body {
             <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
         </div>
             <div class="book-card">
-                <img src="C:/JS/images/book10.png" alt="Book 11">
+                <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book10.png?raw=true" alt="Book 11">
                 <h3>Танець Недоумка</h3>
                 <p>Автор:  Ілларіон Павлюк</p>
                 <p class="short-description">Про книгу: Космічний біолог Гіль, за плечима якого чимало військових операцій, переживає не найкращі часи: безробіття, безгрошів'я, сім'я на межі розлучення, ще й висока ймовірність, що проявиться
@@ -468,7 +735,7 @@ body {
 </div>
 
         <div class="book-card">
-            <img src="C:/JS/images/book11.png " alt="Book 12">
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book11.png?raw=true" alt="Book 12">
             <h3>Життя в середньовічному замку</h3>
             <p>Автор: Джозеф Ґіс,</p>
             <p class="short-description">Про Книгу: Уявіть, як крокуєте вузькими коридорами кам’яного замку, вдихаєте запахи готичних залів і чуєте дзвін мечів у ритуалі посвяти лицаря. Ця книга — не просто збірка фактів, а справжнє запрошення
@@ -480,7 +747,7 @@ body {
             <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
         </div>
             <div class="book-card">
-                <img src="C:/JS/images/book12.png" alt="Book 13">
+                <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book12.png?raw=true" alt="Book 13">
                 <h3>Королівство проклятих</h3>
                 <p>Автор:  Керрі Маніскалко</p>
                 <p class="short-description">Про книгу: Емілія та її сестра-близнючка Вітторія — відьми, які таємно живуть серед людей. Одного вечора Вітторія не з’являється на родинну вечерю. І незабаром Емілія знаходить тіло дорогої сестри
@@ -492,7 +759,7 @@ body {
                 <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
             </div>
             <div class="book-card">
-                <img src="C:/JS/images/book13.png" alt="Book 14">
+                <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book13.png?raw=true" alt="Book 14">
                 <h3>Дюна</h3>
                 <p>Автор:  Френк Герберт</p>
                 <p class="short-description">Про книгу: Меланж, або прянощі, — найцінніша і найрідкісніша речовина у всесвіті, яка може все: від подовження життя до сприяння міжзоряним подорожам. І знайти її можна лише на одній планеті
@@ -504,7 +771,7 @@ body {
                 <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
             </div>
             <div class="book-card">
-                <img src="C:/JS/images/book14.png" alt="Book 15">
+                <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book14.png?raw=true" alt="Book 15">
                 <h3>Світло в темряві</h3>
                 <p>Автор:  Стейсі Віллінгем</p>
                 <p class="short-description">Про книгу: Двадцять років тому Луїзіані зникли дівчата-підлітки. Батько дванадцятирічної Хлої Девіс зізнався у вбивстві шістьох жертв, за що був засуджений на довічне ув’язнення. Після цього життя Хлої,
@@ -516,7 +783,7 @@ body {
                 <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
     <div class="book-card">
-    <img src="C:/JS/images/book15.png" alt="Book 16">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book15.png?raw=true" alt="Book 16">
     <h3>Переслідування Аделіни</h3>
     <p>Автор:  Карлтон Х. Д</p>
     <p class="short-description">Про книгу: У середині 1940-х червоногубу красуню Женев’єву (Джіджі) Парсонс переслідує сталкер. Одначе їй така увага й таємничість цього чоловіка стають приємними і дарують живу віддушину, ковток свіжого повітря, маленькі радощі життя. Щоправда, красуня гине за загадкових обставин, а вбивство лишається нерозкритим.</p>
@@ -528,7 +795,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book16.png" alt="Book 17">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book16.png?raw=true" alt="Book 17">
     <h3>Дрімаючий демон Декстера</h3>
     <p>Автор:  Джефф Ліндсей</p>
     <p class="short-description">Про книгу: Декстер Морган працює експертом з бризк крові в поліції Маямі, але у нього є страшна таємниця. Він — серійний вбивця, але вбиває він лише вбивць, ґвалтівників та інших злочинців, яким вдалося втекти від справедливості. Декстер прислуховується до свого внутрішнього голосу, свого «темного пасажира», який спонукає його до вбивств. Кожного разу, коли Декстер вбиває когось, голос у його голові зникає, але завжди повертається.</p>
@@ -540,7 +807,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book17.png" alt="Book 18">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book17.png?raw=true" alt="Book 18">
     <h3>Ніколи не бреши</h3>
     <p>Автор:  Фріда Мак-Фадден</p>
     <p class="short-description">Про книгу: ноді правда вбиває.. У пошуках будинку своєї мрії молодята Трісія та Ейтан опиняються в розкішному маєтку на Кедровій Алеї, виставленому на продаж. Оглядаючи кімнати, вони розуміють, що саме тут жила докторка Адріана Гейл, відома фахівчиня з психіатрії, яка загадково зникла майже чотири роки тому.
@@ -552,7 +819,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book18.png" alt="Book 19">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book18.png?raw=true" alt="Book 19">
     <h3>Багряні Ріки</h3>
     <p>Автор:  Жан-Крістоф Ґранже</p>
     <p class="short-description">Про книгу: Маленьке французьке містечко Ґернон охоплене жахом через серію жорстоких убивств. Жертви — бібліотекар Кайюа, санітар Філіпп Серті та лікар Шернсе — зазнали пекельних тортур. Місцева поліція не може відшукати вбивцю, тому звертається по допомогу до столичного комісара Ньємана.</p>
@@ -564,7 +831,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book19.png" alt="Book 20">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book19.png?raw=true" alt="Book 20">
     <h3>Із крові й попелу</h3>
     <p>Автор:  Дженніфер Л. Арментраут</p>
     <p class="short-description">Про книгу: Пенеллафі Балфур, вона ж Маківка — не просто осиротіла донька багатіїв, наближених до королівської родини, а ще й Діва. Діву роками готують до важливого релігійного ритуалу, глибоко шанують і ревно стережуть, тож Маківка виросла в достатку й має все, крім особистої свободи.
@@ -576,7 +843,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book20.png" alt="Book 21">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book20.png?raw=true" alt="Book 21">
     <h3>Палюче тепло вб’є нас найперше</h3>
     <p>Автор:  Дж. Ґуделл</p>
     <p class="short-description">Про книгу:Лісові пожежі, що не вщухають у Каліфорнії. Теплові хвилі, які вже стали сезонними в Європі. Танення льодовиків, що не припиняється в Арктиці й Антарктиці. Підвищення температури нині — це екологічна загроза найвищого порядку, яка зумовлює всі інші наслідки кліматичної кризи.
@@ -588,7 +855,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/ghoul.png" alt="Book 22">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/ghoul.png?raw=true" alt="Book 22">
     <h3>Tokyo Ghoul</h3>
     <p>Автор:  Ішіда Суї</p>
     <p class="short-description">Про книгу:Кен Канекі — вісімнадцятирічний студент університету, який внаслідок нещасного випадку потрапляє до лікарні, де йому незаконно пересаджують органи одного з гулів, щоб врятувати йому життя. Для того, щоб вижити, гулям необхідно харчуватися людською плоттю, тому вони вбивають людей або знаходять тіла самогубців. Через таку пересадку органів Канекі стає лише напівгулем, але харчуватися людською плоттю йому необхідно як і всім. Канекі прагне зберегти свою людяність, намагаючись зберегти зв'язок зі світом людей, занурившись у співтовариство гулів.</p>
@@ -612,7 +879,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book21.jpg" alt="Book 24">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book21.jpg?raw=true" alt="Book 24">
     <h3>Гра Друзів</h3>
     <p>Автор:  Mikoto Yamaguchi</p>
     <p class="short-description">Про книгу:Хлопці з дружного та згуртованого класу збирають гроші, щоб разом вирушити у поїздку, проте кошти зникають. Вони хочуть організувати власну екскурсію для всього колективу. У результаті підозра під час розслідування падає на двох персонажів - Макото Шібе та Шіхо Саварагі. Саме їм здавалася готівка. Двоє хлопців знають, що не причетні до крадіжки, але вину свою визнають, бо справжній винуватець вирішив мовчати.
@@ -624,7 +891,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book22.png" alt="Book 25">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book22.png?raw=true" alt="Book 25">
     <h3>Бліч</h3>
     <p>Автор:  Tite Kubo</p>
     <p class="short-description">Про книгу:Центральний персонаж Бліч — п'ятнадцятирічний школяр Куросакі Ічіґо, який випадково отримує надприродні сили шиніґамі — «богів смерті». Наділений їх здібностями, Ічіґо вимушений битися із злими духами, захищати людей та відправляти душі померлих у потойбічний світ.</p>
@@ -636,7 +903,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book23.png" alt="Book 26">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book23.png?raw=true" alt="Book 26">
     <h3>One Piece</h3>
     <p>Автор:  Eiichiro Oda</p>
     <p class="short-description">Про книгу:Дія відбувається у вигаданому світі у час «Ери піратів». Подія, що стала точкою відліку ери — страта «Короля піратів», Ґол Д. Роджера. Коли Роджеру було надано право останнього слова, він оголосив, що сховав всі свої скарби в одному місці. Після цього тисячі людей вирушили на пошуки скарбу, названого «Ван піс».</p>
@@ -648,7 +915,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book24.jpg" alt="Book 27">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book24.jpg?raw=true" alt="Book 27">
     <h3>Jujutsu Kaisen</h3>
     <p>Автор:  Gege Akutami</p>
     <p class="short-description">Про книгу:Ітадорі Юджі — старшокласник атлетичної статури, який живе в Сендаї разом з дідусем. Через нелюбов до спорту він постійно уникає шкільної команди з легкої атлетики, хоч і має надлюдську фізичну силу та талант до цього виду спорту. Замість цього він приєднується до шкільного клубу вивчення окультизму
@@ -660,7 +927,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book25.jpg" alt="Book 28">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book25.jpg?raw=true" alt="Book 28">
     <h3>Chainsaw Man</h3>
     <p>Автор:  Tatsuki Fujimoto</п>
    <p class="short-description">Про книгу:Сюжет "Chainsaw Man" розповідає про юнака на ім'я Дені, який працює як мисливець на демонів під керівництвом жорстокого і безжалісного наставника. Після того, як його обдурюють і зраджують, Дені об'єднується зі своїм собакою-демоном, який перетворюється на ланцюгову пилку, і стає "Chainsaw Man" - потужним борцем з демонами.
@@ -672,7 +939,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card" data-genres="Манга">
-    <img src="C:/JS/images/book26.png" alt="Book 29">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book26.png?raw=true" alt="Book 29">
     <h3>Attack On Titan</h3>
     <p>Автор:  Hajime Isayama</p>
     <p class="short-description">>Про книгу: за 100 років до початку її подій людство було практично повністю знищено невідомою людиноподібною расою величезних істот, названих «титанами». Люди були змушені сховатися за трьома високими стінами, яким дали назви Сіна (яп. シーナ Сі: на, внутрішня стіна), Роза (яп. ローゼ Ро: дзе, середня стіна) і Марія (яп. マリア Маріа, зовнішня стіна). Так люди жили багато років, думаючи, що перебувають у цілковитій безпеці. За кожною стіною із зовнішнього боку були побудовані «райони» — містечка, що слугують зовнішнім кордоном оборони і також оточені стінами.</p>
@@ -684,7 +951,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book27.jpg" alt="Book 30">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book27.jpg?raw=true" alt="Book 30">
     <h3>Berserk</h3>
     <p>Автор:  Kentaro Miura</p>
     <p class="short-description">Про книгу: пригоди мечника по імені Гатс, який подорожує країною, боронячись від демонів та людських ворогів. Гатс був колишнім командиром банди найманців, але після того, як його товариш зрадив його і вбив всіх членів банди, Гатс присягнув помститися та став самотнім воїном.</p>
@@ -696,7 +963,7 @@ body {
     <a href="#" class="btn" onclick="openReviewForm()">Відгук</a>
 </div>
 <div class="book-card">
-    <img src="C:/JS/images/book28.png" alt="Book 30">
+    <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/images/book28.png?raw=true" alt="Book 30">
     <h3>По сліду Джека Різника</h3>
     <p>Автор:  Керрі Маніскалко</p>
     <p class="short-description">Про книгу: Одрі Роуз Водсворт сімнадцять, вона донька заможного англійського лорда. Статки і привілеї гарантують дівчині спокійне і передбачуване майбутнє. Але між світськими чаюваннями та примірками модних суконь вона веде заборонене таємне життя.</p>
@@ -1024,13 +1291,13 @@ body {
     </script>
     </script>
    
-     <!-- Вспливаюче вікно логотип скинути яку -->
+     <!--  
      <div id="welcomeModal" class="modal">
         <div class="modal-content">
             <img src="C:/JS/images/logo.jpg" 
             alt="Welcome Image" style="max-width: 100%; border-radius: 10px;">
         </div>
-    </div>
+    </div> -->
 
     <script>
         
@@ -1196,7 +1463,7 @@ body {
             books.forEach(book => {
                 if (!book.querySelector('.discount-label')) {
                     const discountLabel = document.createElement('img');
-                    discountLabel.src = 'C:/JS/images/skudka.png';
+                    discountLabel.src = 'https://png.pngtree.com/png-vector/20210129/ourlarge/pngtree-50-percent-discount-offer-png-image_2858029.jpg';
                     discountLabel.alt = 'Знижка 50%';
                     discountLabel.classList.add('discount-label');
                     book.appendChild(discountLabel);
