@@ -154,13 +154,13 @@ body {
 }
 
 
+    /*Головна*/
     </style>
 </head>
 <body>
 
 <button class="category-button" onclick="location.reload()">Головна</button>
-    
-<div class="header">
+    <div class="header">
     <!-- Кнопка категорій товару -->
     <button class="category-button" onclick="toggleCategoryMenu()">Категорії книг</button>
     <div class="category-dropdown" id="categoryDropdown">
