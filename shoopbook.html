@@ -311,7 +311,7 @@ body {
 <script>
     let cart = [];
 
-   
+
 
     function addToCart(bookTitle, bookPrice, bookImage) {
     const existingItem = cart.find(item => item.title === bookTitle);
@@ -411,6 +411,7 @@ function updateCart() {
             alert('Ваш кошик порожній');
         } else {
             alert('Оформлення замовлення...');
+            openModal('buyModal'); // Відкриває модальне вікно для покупки
         }
     }
 </script>
@@ -1291,13 +1292,13 @@ function updateCart() {
     </script>
     </script>
    
-     <!--  
+     
      <div id="welcomeModal" class="modal">
         <div class="modal-content">
-            <img src="C:/JS/images/logo.jpg" 
+            <img src="https://github.com/andriidivinerapier/SHOP.BOOK/blob/main/%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F_viber_2025-02-24_11-46-03-416.jpg?raw=true" 
             alt="Welcome Image" style="max-width: 100%; border-radius: 10px;">
         </div>
-    </div> -->
+    </div> 
 
     <script>
         
